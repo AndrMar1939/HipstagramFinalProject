@@ -45,6 +45,11 @@ class HipsatgramApi {
         const response = await this.api.get('/users');
         return response.data;
     }
+    async followUser(userId) {
+        console.log(userId)
+        const response = await this.api.get('/users/follow/'+userId);
+        return response.data;
+    }
 
     async getUserById(userId) {
         const response = await this.api.get('/users/'+userId);

@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 
 
 import Wrapper from "./AuthWrapper";
@@ -24,6 +29,7 @@ const Login = () => {
     const [validErrorLogin, setValidErrorLogin] = useState({ loginErr: false });
 
     const isLoading = useSelector((state) => state.getCurrentUser.loading);
+    const errorLoginText = useSelector((state) => state.getCurrentUser.errorLoginText);
 
     const isBtnDisabled = () => {
         return !form.login && !form.password ? true : false;
@@ -62,6 +68,9 @@ const Login = () => {
             setValidErrorPass({ ...validErrorPass, passwordErr: false });
         }
     };
+    // is loading and toasts
+
+
 
      if (isLoading) {
         return  <h2>...loading</h2>
@@ -69,6 +78,7 @@ const Login = () => {
     return (
         <Wrapper>            
             <div>
+                {/* {errorLoginText && toast(errorLoginText)} */}
                 <HeaderAuth>HIPSTAGRAM</HeaderAuth>
                 <h2>Sign in</h2>
                 <AuthFormBox>

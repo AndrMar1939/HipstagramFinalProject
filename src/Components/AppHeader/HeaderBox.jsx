@@ -16,7 +16,7 @@ const HeaderBox = styled.div`
 
     color: #ffffff;
 
-    background: rgb(77, 136, 237, 0.7);
+    background: rgb(77, 136, 237);
 
     h1 {
         font-weight: 700;
@@ -27,20 +27,28 @@ const HeaderBox = styled.div`
         height: 40px;
     }
     a {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin: 0 10px;
+
+        color: #FFFFFF;
     }
     div {
-        min-width: 90px;
+        min-width: 130px;
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+
     }
 
     button:hover {
-        border: solid 1px #FFFFFF;
+        box-shadow: -2px 2px 2px #000000;   
     }
     a:hover {
-        border: solid 1px #FFFFFF;
+        box-shadow: 2px 2px 2px #000000;        
     }
+   
 `;
 
 export default HeaderBox;

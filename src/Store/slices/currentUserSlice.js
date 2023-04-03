@@ -48,6 +48,7 @@ const getCurrentUser = createSlice ({
             state.token = null;
             localStorage.removeItem('token');
             localStorage.removeItem('isAuth');
+            localStorage.removeItem('userLogin');
         }
         // rememberUser: (state) => {
         //     state.rememberUser = true;
@@ -65,7 +66,8 @@ const getCurrentUser = createSlice ({
             })
             .addCase(getCurrentUserThunk.fulfilled, (state, action) => {
                 state.user = action.payload;
-                state.loading = false;               
+                state.loading = false; 
+                localStorage.setItem('userLogin', action.payload.login);              
             })
             .addCase(getCurrentUserThunk.rejected, (state) => {
                 state.loading = false;
@@ -83,7 +85,7 @@ const getCurrentUser = createSlice ({
                 state.errorLoginText = '';
                 state.token = action.payload.access_token;
                 localStorage.setItem('token', action.payload.access_token);
-                localStorage.setItem('isAuth', true);
+                localStorage.setItem('isAuth', true);                
             })
             .addCase(currentUserLoginThunk.rejected, (state, action) => {                
                 state.loading = false;

@@ -9,24 +9,9 @@ const ContentBox = styled.div`
     justify-content: flex-start;
     align-items: center;
 
+    border-left: 1px solid #C0BFBF;
+    border-right: 1px solid #C0BFBF;
 
-
-   
-
-    // h2 {
-    //     font-size: 24px;
-    //     line-height: 28px;
-    //     margin-bottom: 20px;
-    // }
-
-    // div {
-    //     text-align: center;
-    //     max-width: 700px;
-    //     p {
-    //         font-size: 18px;
-    //         line-height: 21px;
-    //     }
-    // }
 `;
 
 export default ContentBox;

@@ -1,28 +1,74 @@
-import { NavLink, useParams } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import UsersBox from "./UsersBox";
 import FollowButton from "./FollowButton";
 import DefaultAvatar from "../DefaultAvatar/DefaultAvatar";
 
-
+import { followUserThunk } from "../../../Store/slices/getUsersSlice";
+import { getByIdThunk } from "../../../Store/slices/getUsersSlice";
+import { isLoadingUserById } from "../../../Store/slices/getUsersSlice";
 
 const UsersGeneralCard = ({ user, ...props }) => {
-    const { avatar, login, isFollow} = user;
+    const dispatch = useDispatch();
+    const { avatar, login, isFollow, _id } = user;
+    const [followState, setFollowState] = useState(isFollow);
+    const nav = useNavigate();
 
-    
+    // const currentUserId= useSelector((state) => state.getCurrentUser.user.id);
+    console.log(followState);
 
+    // handlers
+    const handleFollow = () => {
+        dispatch(followUserThunk(_id))
+            .then((response) => {
+                setFollowState(!followState);
+            })
+            .catch((er) => {
+                console.log(er);
+            });
+    };
+
+    const handleGetById = () => {
+        dispatch(isLoadingUserById());
+        setTimeout(() => {
+            nav("/users/" + _id);
+        }, 500);
+       
+    };
 
     return (
-        <UsersBox>
+        <UsersBox
+            onClick={(e) => {
+                // e.stopPropagation();
+                handleGetById();
+            }}
+        >
             <div>
-                <img src={avatar? avatar :DefaultAvatar} alt="avatar" />
+                <img src={avatar ? avatar : DefaultAvatar} alt="avatar" />
                 <h2>{login}</h2>
             </div>
-            {isFollow ? (
-                <FollowButton isFollow={isFollow}>Unfollow</FollowButton>
+            {followState ? (
+                <FollowButton
+                    isFollow={followState}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleFollow();
+                    }}
+                >
+                    Unfollow
+                </FollowButton>
             ) : (
-                <FollowButton isFollow={isFollow}>Follow</FollowButton>
+                <FollowButton
+                    isFollow={followState}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleFollow();
+                    }}
+                >
+                    Follow
+                </FollowButton>
             )}
         </UsersBox>
     );
