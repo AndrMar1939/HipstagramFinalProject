@@ -8,10 +8,6 @@ const ContentBox = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-
-    border-left: 1px solid #C0BFBF;
-    border-right: 1px solid #C0BFBF;
-
 `;
 
 export default ContentBox;

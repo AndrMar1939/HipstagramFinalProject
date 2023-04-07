@@ -6,7 +6,6 @@ const BoxInput = styled.div`
     text-align: center;    
     min-height: 110px;
     transition: 0.33s;
-    margin: 0 auto;
 
     label {
         display: block;

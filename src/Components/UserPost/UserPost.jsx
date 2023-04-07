@@ -17,7 +17,7 @@ const UserPost = styled.div`
     
 
     img {
-        max-width: 340px;
+        max-width: 330px;
         height: 200px;
     }
 
@@ -27,11 +27,6 @@ const UserPost = styled.div`
         text-align: center;
     }
 
-    // div {
-    //     display: flex;
-    //     // justify-content: ;
-    //     align-items: center;
-    // }
 `;
 
 export default UserPost;

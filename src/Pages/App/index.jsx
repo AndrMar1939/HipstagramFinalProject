@@ -7,11 +7,16 @@ import AppHeader from "../../Components/AppHeader";
 import AppContainer from "../../Components/AppContainer";
 import ContentBox from "./ContentBox";
 import FooterNavigator from "../../Components/FooterNavigator";
+
 // pages
-import CurrentUser from "./CurrentUser";
 import FeedPage from "./FeedPage";
-import UsersPage from "./Users";
+import UsersPage from "./UsersPage";
 import UserPage from "./UserPage";
+import CurrentUserPage from "./CurrentUser";
+import UserUpdatePage from "./UserUpdatePage";
+import UserFollowersFollowingsPage from "./UserFollowersFollowingsPage";
+import PostPage from "./PostPage";
+import CreatePostPage from "./CreatePostPage";
 
 // thunk
 import { getCurrentUserThunk } from "../../Store/slices/currentUserSlice";
@@ -19,18 +24,17 @@ import { getCurrentUserThunk } from "../../Store/slices/currentUserSlice";
 const Application = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.getCurrentUser.user);
-    // const param = useParams();
-    // console.log(param);
+    const userLogin = localStorage.getItem("userLogin");
 
-    useEffect(()=>{
-        // if (!user) {
-        
-        // dispatch(getCurrentUserThunk())
-        // }
-        
-    }, [])
+    useEffect(() => {
+        if (!user || !userLogin) {
+            dispatch(getCurrentUserThunk());
+        }
+    }, []);
 
-
+    if (!user) {
+        return <h1>...loading</h1>;
+    }
 
     return (
         <AppContainer>
@@ -38,12 +42,16 @@ const Application = () => {
             <ContentBox>
                 <Routes path="/">
                     <Route index element={<FeedPage />} />
-                    <Route path="users" element={<UsersPage/>} />
-                    <Route path="users/:userId" element={<UserPage/>} />
-                    <Route path="profile" element={<CurrentUser />} />
-
-                    {/* <Route path="post/:postId" element={<Post/>}/> */}
+                    <Route path="users" element={<UsersPage />} />
+                    <Route path="users/:userId" element={<UserPage />} />
+                    <Route path={"users/"+user.id} element={<CurrentUserPage />} />
+                    <Route path="settings" element={<UserUpdatePage />} />
+                    <Route path="followers/:userId" element={<UserFollowersFollowingsPage />} />
+                    <Route path="followings/:userId" element={<UserFollowersFollowingsPage />} />                    
+                    <Route path="posts/:postId" element={<PostPage/>}/>
+                    <Route path="createPost" element={<CreatePostPage/>}/>
                     <Route path="*" element={<Navigate to="/" />} />
+                   
                 </Routes>
             </ContentBox>
             <FooterNavigator />

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     max-width: 1334px;
     min-height: 750px;
     
-    background-image: url(assets/auth_cover.png);
+    background-image: url(/assets/auth_cover.png);
     background-repeat: no-repeat;
     
 

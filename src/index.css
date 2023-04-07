@@ -57,6 +57,7 @@ button::-moz-focus-inner {
 a,
 a:visited {
   text-decoration: none;
+  color: #000000;
 }
 a:hover {
   text-decoration: none;
@@ -89,4 +90,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+h1{
+  font-size: 28px;
 }

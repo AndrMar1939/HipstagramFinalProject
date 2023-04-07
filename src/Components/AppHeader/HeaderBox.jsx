@@ -18,13 +18,16 @@ const HeaderBox = styled.div`
 
     background: rgb(77, 136, 237);
 
+ 
     h1 {
         font-weight: 700;
         font-size: 24px;
         line-height: 28px;
     }
     img {
+        background: #FFFFFF;
         height: 40px;
+        border-radius: 10px;
     }
     a {
         display: flex;

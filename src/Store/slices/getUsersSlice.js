@@ -3,11 +3,13 @@ import api from "../../services/api";
 
 const initialState = {
     users: [],
-    user: null,
+    user: '',
     loading: false,
     errorUsersText: '',
     firstContentDownload: true,
 }
+
+// thunks
 
 export const getUsersThunk = createAsyncThunk(
     'getUsersSlice/get',
@@ -23,13 +25,13 @@ export const followUserThunk = createAsyncThunk(
     }
 )
 export const getByIdThunk = createAsyncThunk(
-    'getByIdThunk/followUser',
+    'getByIdThunk/getUser',
     (userId) => {
         return api.getUserById(userId);
     }
 )
 
-
+// slice
 
 const getUsersSlice = createSlice({
     name: 'getUsersSlice',
@@ -37,6 +39,21 @@ const getUsersSlice = createSlice({
     reducers: {
         isLoadingUserById: (state)=>{
             state.loading = true;
+        },
+        subscribeForUser: (state)=>{
+            ++state.user.followersCount;
+        },
+        unsubscribeForUser: (state)=>{
+            --state.user.followersCount;
+        },
+        toggleIsFollow: (state, action)=>{
+            state.users.forEach(user=> {                
+                if (user._id===action.payload){
+                    user.isFollow = !user.isFollow;
+                }});
+
+
+
         },
     },
     extraReducers: (builder) => {
@@ -84,5 +101,8 @@ const {actions, reducer} = getUsersSlice;
 export default reducer;
 
 export const {
-    isLoadingUserById
+    isLoadingUserById,
+    subscribeForUser,
+    unsubscribeForUser,
+    toggleIsFollow
 } = actions;

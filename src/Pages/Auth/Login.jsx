@@ -31,6 +31,7 @@ const Login = () => {
     const isLoading = useSelector((state) => state.getCurrentUser.loading);
     const errorLoginText = useSelector((state) => state.getCurrentUser.errorLoginText);
 
+    // button disabled
     const isBtnDisabled = () => {
         return !form.login && !form.password ? true : false;
     };

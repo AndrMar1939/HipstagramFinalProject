@@ -1,38 +1,53 @@
-import { NavLink} from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../Store/slices/currentUserSlice";
-
 
 import UserIcon from "../UI/UserIconSVG";
 import ButtonLogOutSVG from "../UI/ButtonLogOutSVG";
 import ButtonLogOut from "../UI/ButtonLogOut";
 import HeaderBox from "./HeaderBox";
 
+import { activeHeader } from "../../helpers/activeHeader";
 
-
-const AppHeader = ({ ...props }) => {
+const AppHeader = () => {
     const dispatch = useDispatch();
-    const userLogin = localStorage.getItem('userLogin');
+    const userLogin = localStorage.getItem("userLogin");
+    const { pathname } = useLocation();
+    const currentUserId = useSelector((state) => state.getCurrentUser.user.id);
 
+    console.log(pathname);
 
-    const activeStyle =({ isActive }) => {
+    // headers and Navlinks style
+
+    let defaultHeader = "Hipstagram";
+
+    const activeStyle = ({ isActive }) => {
         return {
-            boxShadow: isActive ? "0px 3px 3px #ffd901":"none", 
+            borderBottom: isActive ? "solid 2px #ffd901" : "none",
         };
     };
 
+    // render
     return (
         <HeaderBox>
             <div>
-                <img src="assets/logo_main.png" alt="logo" />
+                <img src="/assets/logo_main.png" alt="logo" />
             </div>
-            <h1>Hipstagram</h1>
+            <h1>
+                {activeHeader(pathname)
+                    ? activeHeader(pathname)
+                    : defaultHeader}
+            </h1>
             <div>
-                <NavLink to="/profile" style={activeStyle}>
-                    <UserIcon/>
+                <NavLink to={"users/" + currentUserId} style={activeStyle}>
+                    <UserIcon />
                     <span>{userLogin}</span>
                 </NavLink>
-                <ButtonLogOut onClick={()=>{dispatch(logout())}}>
+                <ButtonLogOut
+                    onClick={() => {
+                        dispatch(logout());
+                    }}
+                >
                     <ButtonLogOutSVG />
                 </ButtonLogOut>
             </div>

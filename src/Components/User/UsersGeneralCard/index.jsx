@@ -1,47 +1,72 @@
 import { useState } from "react";
-import { NavLink, useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import UsersBox from "./UsersBox";
 import FollowButton from "./FollowButton";
 import DefaultAvatar from "../DefaultAvatar/DefaultAvatar";
 
-import { followUserThunk } from "../../../Store/slices/getUsersSlice";
-import { getByIdThunk } from "../../../Store/slices/getUsersSlice";
-import { isLoadingUserById } from "../../../Store/slices/getUsersSlice";
+import {
+    followUserThunk,
+    toggleIsFollow,
+    getByIdThunk,
+} from "../../../Store/slices/getUsersSlice";
 
-const UsersGeneralCard = ({ user, ...props }) => {
+import {
+    removeSubscribe,
+    addSubscribe,
+} from "../../../Store/slices/currentUserSlice";
+
+import { followPageLoading } from "../../../Store/slices/followerAndFollowingSlice";
+
+const UsersGeneralCard = ({ user, wentFromFollowPage, ...props }) => {
     const dispatch = useDispatch();
-    const { avatar, login, isFollow, _id } = user;
+    const { avatar, login, isFollow } = user;
     const [followState, setFollowState] = useState(isFollow);
-    const nav = useNavigate();
+    const navigate = useNavigate();
+    const id = user._id ? user._id : user.id;
+    
 
-    // const currentUserId= useSelector((state) => state.getCurrentUser.user.id);
-    console.log(followState);
+    // auth user id and checking is user own id equal to id
+    const userOwnId = useSelector((state) => state.getCurrentUser.user.id);
+
+    // create user with 'id' and remove '_id' for local work for button 'follow'.
+    // this action removes bugs for subscribe and unsubscribe
+    const newUser = { ...user, id };
 
     // handlers
     const handleFollow = () => {
-        dispatch(followUserThunk(_id))
-            .then((response) => {
-                setFollowState(!followState);
-            })
-            .catch((er) => {
-                console.log(er);
-            });
+        dispatch(followUserThunk(id)).then((response) => {
+            if (response.error) {
+                return;
+            }
+            if (followState) {
+                dispatch(removeSubscribe(newUser));
+            } else {
+                dispatch(addSubscribe(newUser));
+            }
+            dispatch(toggleIsFollow(id));
+            setFollowState(!followState);
+        });
     };
 
     const handleGetById = () => {
-        dispatch(isLoadingUserById());
-        setTimeout(() => {
-            nav("/users/" + _id);
-        }, 500);
-       
+        dispatch(followPageLoading());
+        dispatch(getByIdThunk(id)).then((response) => {
+            if (response.error) {
+                return;
+            }
+            navigate("/users/" + id);
+        });
     };
+
+    // condition and render. If id is the same, remove subscribe button
+
+    if (id !== userOwnId && wentFromFollowPage !== true)
 
     return (
         <UsersBox
             onClick={(e) => {
-                // e.stopPropagation();
                 handleGetById();
             }}
         >
@@ -70,6 +95,23 @@ const UsersGeneralCard = ({ user, ...props }) => {
                     Follow
                 </FollowButton>
             )}
+        </UsersBox>
+    );
+
+    if (wentFromFollowPage )
+    return (
+        <UsersBox
+            onClick={(e) => {
+                handleGetById();
+            }}
+        >
+            <div>
+                <img src={avatar ? avatar : DefaultAvatar} alt="avatar" />
+                {id === userOwnId 
+                    ? <h2>WTF... it is me</h2> 
+                    : <h2>{login}</h2>}
+                
+            </div>
         </UsersBox>
     );
 };

@@ -1,9 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 
-
-
-
+// init state
 const initialState = {
     isAuth: localStorage.getItem('isAuth'),
     token: localStorage.getItem('token'),
@@ -11,7 +9,7 @@ const initialState = {
     loading: false,
     errorLoginText: '',
     rememberUser: localStorage.getItem('rememberUser'),
-}
+};
 
 // thunks
 
@@ -20,7 +18,7 @@ export const getCurrentUserThunk = createAsyncThunk(
     (_, {rejectWithValue})=>{     
         return api.currentUser();
     }
-)
+);
 
 
 export const currentUserLoginThunk = createAsyncThunk(
@@ -30,8 +28,21 @@ export const currentUserLoginThunk = createAsyncThunk(
             console.log(er)
             return rejectWithValue(er.response.data)});;
     }
-)
+);
 
+export const updateCurrentUserThunk = createAsyncThunk(
+    'updateCurrentUser/patch',
+    (data)=>{    
+        return api.updateCurrentUser(data);
+    }
+);
+
+export const updatePasswordThunk = createAsyncThunk(
+    'updatePassword/update',
+    (data)=>{    
+        return api.updatePassword(data);
+    }
+);
 
 // create slice
 
@@ -49,7 +60,13 @@ const getCurrentUser = createSlice ({
             localStorage.removeItem('token');
             localStorage.removeItem('isAuth');
             localStorage.removeItem('userLogin');
-        }
+        },
+        addSubscribe: (state, action)=>{
+            state.user.following.push(action.payload);
+        },
+        removeSubscribe: (state, action)=>{
+            state.user.following = state.user.following.filter(user => user.id!==action.payload.id)
+        },
         // rememberUser: (state) => {
         //     state.rememberUser = true;
         //     localStorage.setItem('rememberUser', true);
@@ -61,6 +78,7 @@ const getCurrentUser = createSlice ({
     }, 
     extraReducers: (builder) => {
         builder
+        // get user
             .addCase(getCurrentUserThunk.pending, (state) => {
                 state.loading = true;
             })
@@ -74,7 +92,7 @@ const getCurrentUser = createSlice ({
                 state.isAuth = false;
             })
 
-// login
+        // login
             .addCase(currentUserLoginThunk.pending, (state) => {
                 state.loading = true;
                 state.errorLoginText = '';
@@ -85,14 +103,33 @@ const getCurrentUser = createSlice ({
                 state.errorLoginText = '';
                 state.token = action.payload.access_token;
                 localStorage.setItem('token', action.payload.access_token);
-                localStorage.setItem('isAuth', true);                
+                localStorage.setItem('isAuth', true);              
             })
             .addCase(currentUserLoginThunk.rejected, (state, action) => {                
                 state.loading = false;
                 state.isAuth = false;
                 state.errorLoginText = action.payload;
             })
+        // update user
+            .addCase(updateCurrentUserThunk.pending, (state, action) => {                
 
+            })
+            .addCase(updateCurrentUserThunk.fulfilled, (state, action) => {                
+                state.user = {...state.user, ...action.payload}
+            })
+            .addCase(updateCurrentUserThunk.rejected, (state, action) => {                
+
+            })
+        // update password updatePasswordThunk
+            .addCase(updatePasswordThunk.pending, (state, action) => {                
+
+            })
+            .addCase(updatePasswordThunk.fulfilled, (state, action) => {                
+                
+            })
+            .addCase(updatePasswordThunk.rejected, (state, action) => {                
+
+            })
 
             .addDefaultCase(()=>{})
     }
@@ -104,5 +141,7 @@ const {actions, reducer} = getCurrentUser;
 export default reducer;
 export const {
     confirmIsAuth,
-    logout
+    logout,
+    addSubscribe,
+    removeSubscribe
 } = actions;

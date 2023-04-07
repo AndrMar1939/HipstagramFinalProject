@@ -5,20 +5,15 @@ import { useParams } from "react-router-dom";
 import { getCurrentUserThunk } from "../../../Store/slices/currentUserSlice";
 import { getFeedSliceThunk } from "../../../Store/slices/getFeedSlice";
 
-import UserPage from "../UserPage";
-import UserDetailedCard from "../../../Components/User/UserDetailedCard";
+import CurrentUserCard from "../../../Components/User/CurrentUserCard";
 
-const CurrentUser = () => {
+const CurrentUserPage = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.getCurrentUser.user);
     const isLoading = useSelector((state) => state.getCurrentUser.loading);
-    // const {path} = useParams();
-    // console.log(path);
 
     useEffect(() => {
-        if (!user) {
-            dispatch(getCurrentUserThunk());
-        }
+        dispatch(getCurrentUserThunk());
     }, []);
 
     if (!user) {
@@ -28,7 +23,7 @@ const CurrentUser = () => {
     if (isLoading) {
         return <h1>...loading</h1>;
     }
-    return <UserDetailedCard user={user}/>;
+    return <CurrentUserCard user={user} />;
 };
 
-export default CurrentUser;
+export default CurrentUserPage;

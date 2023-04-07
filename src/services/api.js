@@ -5,7 +5,7 @@ import store from "../Store";
 const API_URL = 'http://52.3.249.107:9000';
 
 
-class HipsatgramApi {
+class HipstagramApi {
     constructor(){
         this.API_URL = API_URL;
         this.api = axios.create({
@@ -16,9 +16,10 @@ class HipsatgramApi {
         });
 
         this.api.interceptors.request.use(config => {
-            // if (config.url !== '/auth/login' || config.url !== '/auth/registration') {
-                
-            // }           
+            if (config.method === 'post' && config.url !== '/createPost') {
+                delete config.headers['Content-Type'];
+            }  
+            console.log(config.url, "api");         
             config.headers.Authorization = store.getState().getCurrentUser.token;
 
             return config;
@@ -46,7 +47,6 @@ class HipsatgramApi {
         return response.data;
     }
     async followUser(userId) {
-        console.log(userId)
         const response = await this.api.get('/users/follow/'+userId);
         return response.data;
     }
@@ -56,6 +56,25 @@ class HipsatgramApi {
         return response.data;
     }
 
+    async getFeed() {
+        const response = await this.api.get('/posts/feed');
+        return response.data;
+    }
+    async updateCurrentUser(data) {
+        const response = await this.api.patch('/users/current', data);
+        return response.data;
+    }
+    async updatePassword(data) {
+        const response = await this.api.post('/auth/updatePassword', data);
+        return response.data;
+    }
+    async getFollowersAndFollowings(userId) {
+        const response = await this.api.get('/users/followersAndFollowing/'+userId);
+        return response.data;
+    }
+
+    // posts
+    
     async createPost(data) {
         const formData = new FormData();
         formData.append('title', data.title);
@@ -70,11 +89,24 @@ class HipsatgramApi {
         return response.data;
     }
 
-    async getFeed() {
-        const response = await this.api.get('/posts/feed');
+    async likePostById(postId) {
+        const response = await this.api.get('/posts/like/'+postId);
         return response.data;
     }
+
+    async getComments(postId) {
+        const response = await this.api.get('/comments/'+postId);
+        return response.data;
+    }
+    
+    async addComment(postId) {
+        const response = await this.api.get('/comments', postId);
+        return response.data;
+    }
+
+
+    
 }
 
-export default new HipsatgramApi();
+export default new HipstagramApi();
 

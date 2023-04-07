@@ -17,7 +17,12 @@ const UserPageButton = styled.button`
     text-align: center;
 
 
-    background: ${props=> props.isFollow ?  '#FE7171' : '#4D88ED'}
+    background: ${props=> props.isFollow ?  '#FE7171' : '#4D88ED'};
+
+    &:hover {
+        background: ${props=> props.isFollow ?  '#f81f1f' : '#1c64e0'} ;
+    }
+
 
     
 `;

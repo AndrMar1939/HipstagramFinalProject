@@ -7,12 +7,16 @@ import UsersGeneralCard from "../../../Components/User/UsersGeneralCard";
 
 const UsersPage = () => {
     const dispatch = useDispatch();
+
+
     const usersArr = useSelector((state) => state.getUsersSlice.users);
     const isLoading = useSelector((state) => state.getUsersSlice.loading);
+    const userOwnId = useSelector((state) => state.getCurrentUser.user.id);
     const firstContentDownload = useSelector(
         (state) => state.getUsersSlice.firstContentDownload
     );
 
+ 
     useEffect(() => {
         if (firstContentDownload) {
             dispatch(getUsersThunk());
@@ -24,16 +28,19 @@ const UsersPage = () => {
     }
     return (
         <>
-            {
-                // !users.length ?
-                // <h1>Users not found</h1> :
-                usersArr.map((user) => (
-                    <UsersGeneralCard
-                        user={user}
-                        key={user._id}
-                    ></UsersGeneralCard>
-                ))
-            }
+            {!usersArr.length ? (
+                <h1>Users not found</h1>
+            ) : (
+                usersArr
+                    .filter((user) => {
+                        return user._id !== userOwnId})
+                    .map((user) => (
+                        <UsersGeneralCard
+                            user={user}
+                            key={user._id}
+                        ></UsersGeneralCard>
+                    ))
+            )}
         </>
     );
 };
