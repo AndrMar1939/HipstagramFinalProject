@@ -21,6 +21,11 @@ const Wrapper = styled.div`
         line-height: 28px;
         margin-bottom: 20px;
     }
+    h4 {
+        color: #ff0000;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
 
     div {
         text-align: center;
@@ -29,6 +34,10 @@ const Wrapper = styled.div`
             font-size: 18px;
             line-height: 21px;
         }
+    }
+
+    a{
+        color: #4D88ED;
     }
 `;
 

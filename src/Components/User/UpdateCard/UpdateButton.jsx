@@ -17,7 +17,13 @@ const UpdateButton = styled.button`
     line-height: 16px;
     text-align: center;    
 
-    background: '#4D88ED';
+    
+    background: ${props => props.disabled ? '#a8b6ce' : '#4D88ED'};
+
+    
+    &:hover {        
+        background: ${props => props.disabled ? '#a8b6ce' : ' #1c64e0'};       
+    }
 
     
 `;

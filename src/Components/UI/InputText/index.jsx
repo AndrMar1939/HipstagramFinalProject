@@ -9,33 +9,16 @@ const InputText = forwardRef(({
     ...props
     }, ref) => {
         return (
-            <BoxInput isValidError={isValidError}>
+            <BoxInput>
                 <label>
                     <span>{label}</span>
                     <input {...props} ref={ref}/>
                 </label>  
-                <h3>{errorText}</h3>          
+                {isValidError && <h3>{errorText}</h3>}         
             </BoxInput>
         );
     });
 
 export default InputText;
 
-
-
-// export default function InputText ({
-//     label,
-//     isValidError,
-//     errorText,
-//     ...props
-// }) {
-//     return (
-//         <BoxInput isValidError={isValidError}>
-//             <label>
-//                 <span>{label}</span>
-//                 <input {...props}/>
-//             </label>  
-//             <h3>{errorText}</h3>          
-//         </BoxInput>
-//     );
-// };
+// isValidError={isValidError}

@@ -8,7 +8,7 @@ const initialState = {
     newComment: {},
     loading: false,
     errorPostText: '',
-
+    like: null,
 }
 
 // thunks
@@ -28,6 +28,18 @@ export const createPostThunk = createAsyncThunk(
     'createPost/post',
     (data) => {
         return api.createPost(data);
+    }
+)
+export const likePostThunk = createAsyncThunk(
+    'likePost/GET',
+    (postId) => {
+        return api.likePostById(postId);
+    }
+)
+export const addCommentThunk = createAsyncThunk(
+    'addComment/GET',
+    (data) => {
+        return api.addComment(data);
     }
 )
 
@@ -79,6 +91,29 @@ const postSlice = createSlice({
             .addCase(createPostThunk.rejected, (state, action) => {
                 state.loading = false;
                 state.errorPostText = action.payload;
+            })
+            // like
+            .addCase(likePostThunk.pending, (state) => {
+                // state.loading = true;
+            })
+            .addCase(likePostThunk.fulfilled, (state, action) => {
+                state.loading = false;
+                state.like = action.payload;
+            })
+            .addCase(likePostThunk.rejected, (state, action) => {
+                state.loading = false;
+            })
+            // add comment
+            // like
+            .addCase(addCommentThunk.pending, (state) => {
+                // state.loading = true;
+            })
+            .addCase(addCommentThunk.fulfilled, (state, action) => {
+                state.loading = false;
+                state.comments.push(action.payload)
+            })
+            .addCase(addCommentThunk.rejected, (state, action) => {
+                state.loading = false;
             })
             .addDefaultCase(() => { })
     }

@@ -37,6 +37,17 @@ const PostDetailedContainer = styled.div`
         margin-bottom: 10px;
     }
 
+    div {
+        h3 {
+            margin: 0 10px;
+        }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    form{
+        min-height: 200px;
+    }
 `;
 
 export default PostDetailedContainer;

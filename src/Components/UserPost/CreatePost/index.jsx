@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import PostDetailedContainer from "../PostDetailedCard/PostDetailedContainer/index.jsx";
 import InputText from "../../UI/InputText/index.jsx";
 import Button from "../../UI/Button";
 import DefaultAvatar from "../../User/DefaultAvatar/DefaultAvatar.js";
 import FormCreatePost from "./FormCreatePost/FormCreatePost.jsx";
+import Spinner from "../../Spinner/index.jsx";
 
 import { createPostThunk } from "../../../Store/slices/postSlice.js";
 
@@ -16,12 +17,11 @@ const CreatePost = ({ post, comments, ownerLogin, ...props }) => {
     const isLoading = useSelector((state) => state.postSlice.loading);
     const userID = useSelector((state) => state.getCurrentUser.user.id);
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState } = useForm({});
+    const { register, handleSubmit} = useForm({});
     const [postImg, setPostImg] = useState({
         imagePreviewUrl: null,
         file: null,
     });
-    console.log(postImg.file, userID);
 
     // button disable condition
 
@@ -61,7 +61,7 @@ const CreatePost = ({ post, comments, ownerLogin, ...props }) => {
     };
     // condition for render
     if (isLoading) {
-        return <h1>...loading</h1>;
+        return <Spinner/>;
     }
     // render
     return (

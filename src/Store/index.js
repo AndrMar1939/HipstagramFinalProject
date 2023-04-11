@@ -4,6 +4,7 @@ import getFeedSlice from "./slices/getFeedSlice";
 import getUsersSlice from "./slices/getUsersSlice";
 import getFollowerAndFollowingSlice from "./slices/followerAndFollowingSlice";
 import postSlice from "./slices/postSlice";
+import { authMiddleware } from "./slices/currentUserSlice";
 
 const store = configureStore({
     reducer: { 
@@ -13,9 +14,10 @@ const store = configureStore({
         getFollowerAndFollowingSlice,
         postSlice,
     },
-    middleware: getDefaultMiddleware => getDefaultMiddleware(),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(authMiddleware),
     devTools: true
 });
 
 
 export default store;
+

@@ -2,6 +2,7 @@ import { useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import Spinner from "../../../Components/Spinner";
 import UserDetailedCard from "../../../Components/User/UserDetailedCard";
 import { getByIdThunk,  isLoadingUserById} from "../../../Store/slices/getUsersSlice";
 import { followUserThunk } from "../../../Store/slices/getUsersSlice";
@@ -36,12 +37,12 @@ const UserPage = () => {
 
     // conditions for render
 
-    if(!user || user.id !==userId) {
+    if(!user) {
         dispatch(isLoadingUserById());
-        return <h1>...loading</h1>
+        return <Spinner/>;
     }
     if(isLoading) {
-        return <h1>...loading</h1>
+        return <Spinner/>;
     }
 
     // render

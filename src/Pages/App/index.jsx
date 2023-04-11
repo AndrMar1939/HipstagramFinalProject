@@ -7,6 +7,7 @@ import AppHeader from "../../Components/AppHeader";
 import AppContainer from "../../Components/AppContainer";
 import ContentBox from "./ContentBox";
 import FooterNavigator from "../../Components/FooterNavigator";
+import Spinner from "../../Components/Spinner";
 
 // pages
 import FeedPage from "./FeedPage";
@@ -33,7 +34,7 @@ const Application = () => {
     }, []);
 
     if (!user) {
-        return <h1>...loading</h1>;
+        return <Spinner/>;
     }
 
     return (

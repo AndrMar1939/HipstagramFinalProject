@@ -18,8 +18,7 @@ class HipstagramApi {
         this.api.interceptors.request.use(config => {
             if (config.method === 'post' && config.url !== '/createPost') {
                 delete config.headers['Content-Type'];
-            }  
-            console.log(config.url, "api");         
+            }      
             config.headers.Authorization = store.getState().getCurrentUser.token;
 
             return config;
@@ -28,7 +27,6 @@ class HipstagramApi {
 
     async login(data) {
         const response = await this.api.post('/auth/login', data);
-        console.log('api')
         return response.data;
     }
 
@@ -99,13 +97,10 @@ class HipstagramApi {
         return response.data;
     }
     
-    async addComment(postId) {
-        const response = await this.api.get('/comments', postId);
+    async addComment(data) {
+        const response = await this.api.post('/comments', data);
         return response.data;
-    }
-
-
-    
+    }    
 }
 
 export default new HipstagramApi();

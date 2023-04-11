@@ -38,7 +38,6 @@ const BoxInput = styled.div`
         color: #FF3535;
         overflow: hidden;
         transition: 0.33s;
-        max-height: ${props => props.isValidError === true ? 'none' : 0};   
     }
     
 `;

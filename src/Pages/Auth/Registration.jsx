@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import Wrapper from "./AuthWrapper";
 import InputText from "../../Components/UI/InputText";
@@ -10,45 +11,54 @@ import api from "../../services/api";
 import passwordValidator from "../../helpers/passwordValidator";
 import loginNameValidator from "../../helpers/loginNameValidator";
 import emailValidator from "../../helpers/emailValidator";
+import { cleanErrorText } from "../../Store/slices/currentUserSlice";
 
 const Registration = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [form, setForm] = useState({ login: "", password: "", email: "" });
     const [apiError, setApiError] = useState(null);
+
 
     const isBtnDisabled = () => {
         return !form.login && !form.password && !form.email ? true : false;
     };
     // validation errors
 
-    const [validErrorPass, setValidErrorPass] = useState({ passwordErr: false});
+    const [validErrorPass, setValidErrorPass] = useState({
+        passwordErr: false,
+    });
     const [validErrorLogin, setValidErrorLogin] = useState({ loginErr: false });
     const [validErrorEmail, setValidErrorEmail] = useState({ emailErr: false });
-
 
     // handlers
     const handleChange = (key, value) => {
         setForm((prev) => ({ ...prev, [key]: value }));
     };
+    const handleCleanErrorText = () => {
+        dispatch(cleanErrorText());
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if ( passwordValidator(form.password) && 
+        if (
+            passwordValidator(form.password) &&
             loginNameValidator(form.login) &&
-            emailValidator(form.email)) {
+            emailValidator(form.email)
+        ) {
             try {
                 await api.registration(form);
                 navigate("/login");
             } catch (err) {
                 setApiError(err.response.data);
             }
-            return
+            return;
         }
         // validation
         if (emailValidator(form.email) !== true) {
             setValidErrorEmail({ ...validErrorEmail, emailErr: true });
-        } else  if (emailValidator(form.email) === true) {
+        } else if (emailValidator(form.email) === true) {
             setValidErrorEmail({ ...validErrorEmail, emailErr: false });
         }
 
@@ -63,7 +73,6 @@ const Registration = () => {
         } else if (passwordValidator(form.password) === true) {
             setValidErrorPass({ ...validErrorPass, passwordErr: false });
         }
-
     };
 
     return (
@@ -82,7 +91,6 @@ const Registration = () => {
                             }
                             isValidError={validErrorEmail.emailErr}
                             errorText="must has type as example@mail.com"
-
                         />
                         <InputText
                             label="Login"
@@ -107,11 +115,20 @@ const Registration = () => {
                         <Button type="submit" disabled={isBtnDisabled()}>
                             Sign Up
                         </Button>
+                        {apiError ? <h4>{apiError}</h4> : ''}
                     </form>
                 </AuthFormBox>
                 <p>
                     If you have account you can
-                    <NavLink to="/login"> Login</NavLink>
+                    <NavLink
+                        to="/login"
+                        onClick={() => {
+                            handleCleanErrorText();
+                        }}
+                    >
+                        {" "}
+                        Login
+                    </NavLink>
                 </p>
             </div>
         </Wrapper>

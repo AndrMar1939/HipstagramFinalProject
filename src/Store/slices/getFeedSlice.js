@@ -11,10 +11,8 @@ const initialState = {
 
 export const getFeedSliceThunk = createAsyncThunk(
     'getFeedSlice/get',
-    (_, { rejectWithValue }) => {
-        return api.getFeed().catch(er => {
-            return rejectWithValue(er.response.data)
-        });
+    () => {
+        return api.getFeed()
     }
 )
 

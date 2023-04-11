@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
-
-
-
+import Spinner from "../../Components/Spinner";
 import Wrapper from "./AuthWrapper";
 import { currentUserLoginThunk } from "../../Store/slices/currentUserSlice";
 import InputText from "../../Components/UI/InputText";
@@ -17,6 +13,7 @@ import passwordValidator from "../../helpers/passwordValidator";
 import loginNameValidator from "../../helpers/loginNameValidator";
 import HeaderAuth from "../../Components/UI/HeaderAuth";
 import AuthFormBox from "../../Components/UI/AuthFormBox";
+import { cleanErrorText } from "../../Store/slices/currentUserSlice";
 
 
 const Login = () => {
@@ -40,6 +37,10 @@ const Login = () => {
     // handlers
     const handleChange = (key, value) => {
         setForm((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const handleCleanErrorText = () => {
+        dispatch(cleanErrorText());
     };
 
     const handleSubmitAndValidate = (e) => {
@@ -69,12 +70,12 @@ const Login = () => {
             setValidErrorPass({ ...validErrorPass, passwordErr: false });
         }
     };
-    // is loading and toasts
+    // is loading condition
 
 
 
      if (isLoading) {
-        return  <h2>...loading</h2>
+        return  <Spinner/>;
      } 
     return (
         <Wrapper>            
@@ -110,10 +111,12 @@ const Login = () => {
                             Login
                         </Button>
                     </form>
+                {errorLoginText ? <h4>{errorLoginText}</h4> : ''}
                 </AuthFormBox>                    
                 <p>
                     If you not have account you can
-                    <NavLink to="/registration"> Registration</NavLink>
+                    <NavLink to="/registration"
+                    onClick={()=>{handleCleanErrorText()}}> Registration</NavLink>
                 </p>
             </div>
         </Wrapper>

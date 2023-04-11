@@ -7,6 +7,7 @@ const initialState = {
     loading: false,
     errorUsersText: '',
     firstContentDownload: true,
+    searchString: '',
 }
 
 // thunks
@@ -51,10 +52,10 @@ const getUsersSlice = createSlice({
                 if (user._id===action.payload){
                     user.isFollow = !user.isFollow;
                 }});
-
-
-
         },
+        searchUserByLogin: (state, action)=>{
+            state.searchString = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -72,10 +73,7 @@ const getUsersSlice = createSlice({
                 state.errorFeedText = action.payload;
             })  
             // follow
-            .addCase(followUserThunk.pending, (state) => {
-            })
-            .addCase(followUserThunk.fulfilled, (state, action) => {
-            })
+
             .addCase(followUserThunk.rejected, (state, action) => {
                 state.errorUsersText = action.payload;
             })  
@@ -87,7 +85,6 @@ const getUsersSlice = createSlice({
                 state.user = action.payload;
                 state.loading = false;
             })
-
 
 
             // default          
@@ -104,5 +101,6 @@ export const {
     isLoadingUserById,
     subscribeForUser,
     unsubscribeForUser,
-    toggleIsFollow
+    toggleIsFollow,
+    searchUserByLogin
 } = actions;

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+
 
 import { getCurrentUserThunk } from "../../../Store/slices/currentUserSlice";
-import { getFeedSliceThunk } from "../../../Store/slices/getFeedSlice";
+import Spinner from "../../../Components/Spinner";
 
 import CurrentUserCard from "../../../Components/User/CurrentUserCard";
 
@@ -17,11 +17,11 @@ const CurrentUserPage = () => {
     }, []);
 
     if (!user) {
-        return <h1>...loading</h1>;
+        return <Spinner/>;
     }
 
     if (isLoading) {
-        return <h1>...loading</h1>;
+        return <Spinner/>;
     }
     return <CurrentUserCard user={user} />;
 };

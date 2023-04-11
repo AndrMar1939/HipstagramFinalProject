@@ -15,8 +15,6 @@ const AppHeader = () => {
     const { pathname } = useLocation();
     const currentUserId = useSelector((state) => state.getCurrentUser.user.id);
 
-    console.log(pathname);
-
     // headers and Navlinks style
 
     let defaultHeader = "Hipstagram";

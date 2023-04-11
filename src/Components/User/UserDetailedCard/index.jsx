@@ -111,7 +111,6 @@ const UserDetailedCard = ({ user, handleFollow, ...props }) => {
                         <UserPost
                             key={item._id}
                             onClick={() => {
-                                console.log(item._id)
                                 handleGoToPost(item._id);
                             }}
                         >

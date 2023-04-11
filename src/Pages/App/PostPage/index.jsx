@@ -2,6 +2,7 @@ import { useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import Spinner from "../../../Components/Spinner";
 import PostDetailedCard from "../../../Components/UserPost/PostDetailedCard";
 import {
     getPostByIdThunk,
@@ -9,10 +10,11 @@ import {
 } from "../../../Store/slices/postSlice";
 import { getByIdThunk } from "../../../Store/slices/getUsersSlice";
 
+
 const PostPage = () => {
     const dispatch = useDispatch();
     const post = useSelector((state) => state.postSlice.post);
-    const comments = useSelector((state) => state.postSlice.comments);
+    const like = useSelector((state) => state.postSlice.like);
     const { postId } = useParams();
     const isLoading = useSelector((state) => state.postSlice.loading);
     const ownerLogin = useSelector(state=> state.getUsersSlice.user.login);
@@ -23,7 +25,7 @@ const PostPage = () => {
         dispatch(getCommentsThunk(postId));
         dispatch(getByIdThunk(post.ownerId));
         
-    }, []);
+    }, [like]);
     useEffect(() => {
         dispatch(getByIdThunk(post.ownerId));
         
@@ -32,10 +34,10 @@ const PostPage = () => {
     // condition
 
     if (isLoading) {
-        return <h1>...loading</h1>;
+        return <Spinner/>;
     }
 
-    return <PostDetailedCard post={post} comments={comments} ownerLogin={ownerLogin}/>;
+    return <PostDetailedCard ownerLogin={ownerLogin}/>;
 };
 
 export default PostPage;

@@ -4,6 +4,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 import { getFollowerAndFollowingThunk } from "../../../Store/slices/followerAndFollowingSlice";
 
+import Spinner from "../../../Components/Spinner";
 import UsersGeneralCard from "../../../Components/User/UsersGeneralCard";
 import ButtonBack from "../../../Components/UI/ButtonBack";
 
@@ -36,7 +37,7 @@ const UserFollowersFollowingsPage = () => {
     // render conditions
 
     if (isLoading) {
-        return <h1>...loading</h1>;
+        return <Spinner/>;
     }
 
     // followers
