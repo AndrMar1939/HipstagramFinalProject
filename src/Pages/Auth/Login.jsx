@@ -98,7 +98,7 @@ const Login = () => {
                         />
                         <InputText
                             label="Password"
-                            type="text"
+                            type="password"
                             placeholder="password"
                             required
                             onChange={(e) =>

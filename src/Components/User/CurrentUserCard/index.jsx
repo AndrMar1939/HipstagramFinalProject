@@ -71,9 +71,6 @@ const CurrentUserCard = ({ user, ...props }) => {
                             }}
                         >
                             <img src={item.imgUrl} alt="post" />
-                            <div>
-                                <h2>{item.likes.length} likes</h2>
-                            </div>
                         </UserPost>
                     ))
                 ) : (

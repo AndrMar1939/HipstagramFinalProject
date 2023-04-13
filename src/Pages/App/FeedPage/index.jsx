@@ -44,7 +44,7 @@ const FeedPage = () => {
                     </FeedPost>
                 ))
             ) : (
-                <h2>Empty</h2>
+                <h1>Empty</h1>
             )}
         </FeedBox>
     );

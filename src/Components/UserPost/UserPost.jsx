@@ -10,22 +10,16 @@ const UserPost = styled.div`
     border-radius: 10px;
 
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
     
 
     img {
         max-width: 330px;
-        height: 200px;
+        height: 90%;
     }
 
-    h2 {
-        font-size: 24px;
-        line-height: 28px;
-        text-align: center;
-    }
 
 `;
 
